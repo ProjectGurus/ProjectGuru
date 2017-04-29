@@ -11,7 +11,7 @@ namespace ProjectGuru.Controllers
     {
         public ActionResult Index()
         {
-            return View(ActivityRepository.GetInstance().List);
+            return View(ActivityRepository.GetInstance().GetAll());
         }
 
         public ActionResult Details(int id)
@@ -30,7 +30,7 @@ namespace ProjectGuru.Controllers
             try
             {
                 // TODO: Add insert logic here
-                ActivityRepository.GetInstance().List.Add(activity);
+                ActivityRepository.GetInstance().Add(activity);
                 return RedirectToAction("Index");
             }
             catch
