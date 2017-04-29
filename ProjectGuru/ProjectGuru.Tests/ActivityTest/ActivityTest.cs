@@ -1,14 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ProjectGuru.Models;
 
 namespace ProjectGuru.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class ActivityTest
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
     }
 }
