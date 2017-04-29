@@ -17,11 +17,19 @@ namespace ProjectGuru.Models
             return Instance ?? (Instance = new ActivityRepository());
         }
 
-        public List<Activity> GetAll()
+        public List<Activity> Get()
         {
             using (ActivitiesContext context = new ActivitiesContext())
             {
                 return context.Activities.ToList();
+            }
+        }
+
+        public Activity Get(string name)
+        {
+            using (ActivitiesContext context = new ActivitiesContext())
+            {
+                return context.Activities.Find(name);
             }
         }
 
@@ -30,6 +38,26 @@ namespace ProjectGuru.Models
             using (ActivitiesContext context = new ActivitiesContext())
             {
                 context.Activities.Add(activity);
+                context.SaveChanges();
+            }
+        }
+
+        public void Remove(string name)
+        {
+            using (ActivitiesContext context = new ActivitiesContext())
+            {
+                context.Activities.Remove(context.Activities.Find(name));
+                context.SaveChanges();
+            }
+        }
+
+        public void Update(Activity updated)
+        {
+            using(ActivitiesContext context = new ActivitiesContext())
+            {
+                Activity activity = context.Activities.Find(updated.Name);
+                activity.Description = updated.Description;
+                activity.Duration = updated.Duration;
                 context.SaveChanges();
             }
         }

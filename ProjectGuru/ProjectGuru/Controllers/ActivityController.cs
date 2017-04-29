@@ -9,16 +9,19 @@ namespace ProjectGuru.Controllers
 {
     public class ActivityController : Controller
     {
+        [HttpGet]
         public ActionResult Index()
         {
-            return View(ActivityRepository.GetInstance().GetAll());
+            return View(ActivityRepository.GetInstance().Get());
         }
 
-        public ActionResult Details(int id)
+        [HttpGet]
+        public ActionResult Details(string name)
         {
-            return View();
+            return View(ActivityRepository.GetInstance().Get().Find(a => a.Name.Equals(name)));
         }
 
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
@@ -29,7 +32,6 @@ namespace ProjectGuru.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
                 ActivityRepository.GetInstance().Add(activity);
                 return RedirectToAction("Index");
             }
@@ -39,18 +41,17 @@ namespace ProjectGuru.Controllers
             }
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string name)
         {
-            return View();
+            return View(ActivityRepository.GetInstance().Get(name));
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string name, Activity updated)
         {
             try
             {
-                // TODO: Add update logic here
-
+                ActivityRepository.GetInstance().Update(updated);
                 return RedirectToAction("Index");
             }
             catch
@@ -59,18 +60,18 @@ namespace ProjectGuru.Controllers
             }
         }
 
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public ActionResult Delete(string name)
         {
-            return View();
+            return View(ActivityRepository.GetInstance().Get(name));
         }
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string name, FormCollection forms)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                ActivityRepository.GetInstance().Remove(name);
                 return RedirectToAction("Index");
             }
             catch
