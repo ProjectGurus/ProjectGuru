@@ -40,21 +40,23 @@ namespace ProjectGuru.Controllers
             return RedirectToAction("Index", new { project = project });
         }
 
-        public ActionResult Edit(string name)
+        [HttpGet]
+        public ActionResult Edit(string project, string name)
         {
+            ViewBag.Project = project;
             return View(activityRepository.Find(name));
         }
 
         [HttpPost]
-        public ActionResult Edit(string name, Activity updated)
+        public ActionResult Edit(string project, Activity updated)
         {
             try
             {
-                Activity activity = activityRepository.Find(name);
+                Activity activity = activityRepository.Find(updated.Name);
                 activity.Description = updated.Description;
                 activity.Duration = updated.Duration;
                 activityRepository.Persist();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { project = project });
             }
             catch
             {
@@ -63,19 +65,20 @@ namespace ProjectGuru.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delete(string name)
+        public ActionResult Delete(string project, string name)
         {
+            ViewBag.Project = project;
             return View(activityRepository.Find(name));
         }
 
         [HttpPost]
-        public ActionResult Delete(string name, FormCollection forms)
+        public ActionResult Delete(string project, string name, FormCollection forms)
         {
             try
             {
                 activityRepository.Remove(name);
                 activityRepository.Persist();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { project = project });
             }
             catch
             {

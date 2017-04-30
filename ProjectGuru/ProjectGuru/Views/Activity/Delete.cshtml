@@ -29,12 +29,10 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
+    <form action="/Activity/Delete?project=@Html.ViewBag.Project&name=@Model.Name" method="post" novalidate="novalidate">
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "Index", new { project = ViewBag.Project })
         </div>
-    }
+    </form>
 </div>

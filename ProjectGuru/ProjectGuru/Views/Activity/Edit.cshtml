@@ -7,10 +7,7 @@
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
+<form action="/Activity/Edit?project=@Html.ViewBag.Project" method="post" novalidate="novalidate">
     <div class="form-horizontal">
         <h4>Activity</h4>
         <hr />
@@ -39,7 +36,7 @@
             </div>
         </div>
     </div>
-}
+</form>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
