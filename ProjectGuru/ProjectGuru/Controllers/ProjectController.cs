@@ -1,4 +1,5 @@
-﻿using ProjectGuru.Models;
+﻿using ProjectGuru.DataAccess;
+using ProjectGuru.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,22 @@ namespace ProjectGuru.Controllers
 {
     public class ProjectController : Controller
     {
-        private ProjectRepository projectRepo = new ProjectRepository(new DataBase());
-
         [HttpGet]
         public ActionResult Index()
         {
-            return View(projectRepo.GetAll());
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return View(uow.Projects.GetAll()); 
+            }
         }
 
         [HttpGet]
-        public ActionResult Details(string name)
+        public ActionResult Details(int projectId)
         {
-            return View(projectRepo.Find(name));
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return View(uow.Projects.Get(projectId)); 
+            }
         }
 
         [HttpGet]
@@ -34,9 +39,12 @@ namespace ProjectGuru.Controllers
         {
             try
             {
-                projectRepo.Add(Project);
-                projectRepo.Persist();
-                return RedirectToAction("Index");
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    uow.Projects.Add(Project);
+                    uow.Complete();
+                    return RedirectToAction("Index"); 
+                }
             }
             catch
             {
@@ -44,20 +52,27 @@ namespace ProjectGuru.Controllers
             }
         }
 
-        public ActionResult Edit(string name)
+        public ActionResult Edit(int projectId)
         {
-            return View(projectRepo.Find(name));
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return View(uow.Projects.Get(projectId));
+            }
         }
 
         [HttpPost]
-        public ActionResult Edit(string name, Project updated)
+        public ActionResult Edit(int projectId, Project updated)
         {
             try
             {
-                Project Project = projectRepo.Find(name);
-                Project.Description = updated.Description;
-                projectRepo.Persist();
-                return RedirectToAction("Index");
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    Project project = uow.Projects.Get(projectId);
+                    project.Name = updated.Name;
+                    project.Description = updated.Description;
+                    uow.Complete();
+                    return RedirectToAction("Index"); 
+                }
             }
             catch
             {
@@ -66,21 +81,27 @@ namespace ProjectGuru.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delete(string name)
+        public ActionResult Delete(int projectId)
         {
-            return View(projectRepo.Find(name));
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return View(uow.Projects.Get(projectId));
+            }
         }
 
         [HttpPost]
-        public ActionResult Delete(string name,FormCollection form)
+        public ActionResult Delete(int projectId, FormCollection form)
         {
             try
             {
-                projectRepo.Remove(name);
-                projectRepo.Persist();
-                return RedirectToAction("Index");
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    uow.Projects.Remove(uow.Projects.Get(projectId));
+                    uow.Complete();
+                    return RedirectToAction("Index"); 
+                }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return View();
             }

@@ -4,10 +4,10 @@
     ViewBag.Title = "Create";
 }
 
-<h2>@Html.ViewBag.Project</h2>
+<h2>Project: @Html.ViewBag.ProjectId</h2>
 
 
-<form action="/Activity/Create?project=@Html.ViewBag.Project" method="post" novalidate="novalidate">
+<form action="/Activity/Create?projectId=@Html.ViewBag.ProjectId" method="post" novalidate="novalidate">
     <div class="form-horizontal">
         <h4>Create new Activity</h4>
         <hr>
@@ -44,7 +44,7 @@
 </form>
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", new { projectId = @Html.ViewBag.ProjectId })
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>

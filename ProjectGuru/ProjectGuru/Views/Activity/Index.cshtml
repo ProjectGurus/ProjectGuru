@@ -7,7 +7,7 @@
 <h2>Activities Overview</h2>
 
 <p>
-    @Html.ActionLink("New Activity", "Create", new { project = ViewBag.Project }) |
+    @Html.ActionLink("New Activity", "Create", new { projectId = ViewBag.ProjectId }) |
     @Html.ActionLink("Back To Projects", "Index", "Project")
 </p>
 <table class="table">
@@ -37,9 +37,9 @@
                 @Html.DisplayFor(modelItem => item.Duration)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { project = ViewBag.Project, name = item.Name }) |
-                @Html.ActionLink("Details", "Details", new { project = ViewBag.Project, name = item.Name }) |
-                @Html.ActionLink("Delete", "Delete", new { project = ViewBag.Project, name = item.Name })
+                @Html.ActionLink("Edit", "Edit", new { projectId = ViewBag.ProjectId, id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { projectId = ViewBag.ProjectId, id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { projectId = ViewBag.ProjectId, id = item.Id })
             </td>
         </tr>
     }

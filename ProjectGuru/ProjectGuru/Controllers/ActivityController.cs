@@ -1,4 +1,5 @@
-﻿using ProjectGuru.Models;
+﻿using ProjectGuru.DataAccess;
+using ProjectGuru.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,54 +10,68 @@ namespace ProjectGuru.Controllers
 {
     public class ActivityController : Controller
     {
-        private ProjectRepository projectRepository = new ProjectRepository(new DataBase());
-        private Repository<Activity> activityRepository = new Repository<Activity>(new DataBase());
-
         [HttpGet]
-        public ActionResult Index(string project)
+        public ActionResult Index(int projectId)
         {
-            ViewBag.Project = project;
-            return View(projectRepository.Find(project).Activities);
+            ViewBag.ProjectId = projectId;
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return View(uow.Projects.GetProjectWithActivities(projectId).Activities);
+            }
         }
 
         [HttpGet]
-        public ActionResult Details(string name)
+        public ActionResult Details(int projectId, int id)
         {
-            return View(activityRepository.Find(name));
+            ViewBag.ProjectId = projectId;
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return View(uow.Activities.Get(id)); 
+            }
         }
 
         [HttpGet]
-        public ActionResult Create(string project)
+        public ActionResult Create(int projectId)
         {
-            ViewBag.Project = project;
+            ViewBag.ProjectId = projectId;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(string project, Activity activity)
+        public ActionResult Create(int projectId, Activity activity)
         {
-            projectRepository.Find(project).Activities.Add(activity);
-            projectRepository.Persist();
-            return RedirectToAction("Index", new { project = project });
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                uow.Projects.GetProjectWithActivities(projectId).Activities.Add(activity);
+                uow.Complete();
+                return RedirectToAction("Index", new { projectId = projectId }); 
+            }
         }
 
         [HttpGet]
-        public ActionResult Edit(string project, string name)
+        public ActionResult Edit(int projectId, int id)
         {
-            ViewBag.Project = project;
-            return View(activityRepository.Find(name));
+            ViewBag.ProjectId = projectId;
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return View(uow.Activities.Get(id)); 
+            }
         }
 
         [HttpPost]
-        public ActionResult Edit(string project, Activity updated)
+        public ActionResult Edit(int projectId, Activity updated)
         {
             try
             {
-                Activity activity = activityRepository.Find(updated.Name);
-                activity.Description = updated.Description;
-                activity.Duration = updated.Duration;
-                activityRepository.Persist();
-                return RedirectToAction("Index", new { project = project });
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    Activity activity = uow.Activities.Get(updated.Id);
+                    activity.Name = updated.Name;
+                    activity.Description = updated.Description;
+                    activity.Duration = updated.Duration;
+                    uow.Complete(); 
+                }
+                return RedirectToAction("Index", new { projectId = projectId });
             }
             catch
             {
@@ -65,20 +80,26 @@ namespace ProjectGuru.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delete(string project, string name)
+        public ActionResult Delete(int projectId, int id)
         {
-            ViewBag.Project = project;
-            return View(activityRepository.Find(name));
+            ViewBag.ProjectId = projectId;
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                return View(uow.Activities.Get(id)); 
+            }
         }
 
         [HttpPost]
-        public ActionResult Delete(string project, string name, FormCollection forms)
+        public ActionResult Delete(int projectId, int id, FormCollection forms)
         {
             try
             {
-                activityRepository.Remove(name);
-                activityRepository.Persist();
-                return RedirectToAction("Index", new { project = project });
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    uow.Activities.Remove(uow.Activities.Get(id));
+                    uow.Complete();
+                    return RedirectToAction("Index", new { projectId = projectId }); 
+                }
             }
             catch
             {

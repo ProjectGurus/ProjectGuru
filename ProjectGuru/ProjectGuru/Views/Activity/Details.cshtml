@@ -11,7 +11,15 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+        @Html.DisplayNameFor(model => model.Description)
         </dt>
 
         <dd>
@@ -29,6 +37,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { name = Model.Name }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { projectId = @Html.ViewBag.ProjectId, id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index", new { projectId = @Html.ViewBag.ProjectId})
 </p>

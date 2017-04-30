@@ -30,9 +30,9 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.ActionLink("View Activities", "Index", "Activity", new { project = item.Name }, null) |
-                @Html.ActionLink("Edit", "Edit", new { name = item.Name }) |
-                @Html.ActionLink("Delete", "Delete", new { name = item.Name })
+                @Html.ActionLink("View Activities", "Index", "Activity", new { projectId = item.Id }, null) |
+                @Html.ActionLink("Edit", "Edit", new { projectId = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { projectId = item.Id })
             </td>
         </tr>
     }

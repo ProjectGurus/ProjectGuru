@@ -2,12 +2,12 @@
 
 namespace ProjectGuru.Models
 {
-    public class DataBase : DbContext
+    public class AppContext : DbContext
     {
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Project> Projects { get; set; }
 
-        public DataBase()
+        public AppContext()
         {
             this.Configuration.LazyLoadingEnabled = false;
         }

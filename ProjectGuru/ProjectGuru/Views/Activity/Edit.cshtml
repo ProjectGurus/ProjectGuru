@@ -7,12 +7,20 @@
 <h2>Edit</h2>
 
 
-<form action="/Activity/Edit?project=@Html.ViewBag.Project" method="post" novalidate="novalidate">
+<form action="/Activity/Edit?projectId=@Html.ViewBag.ProjectId" method="post" novalidate="novalidate">
     <div class="form-horizontal">
         <h4>Activity</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Name)
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -39,7 +47,7 @@
 </form>
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", new { projectId = Html.ViewBag.ProjectId })
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
