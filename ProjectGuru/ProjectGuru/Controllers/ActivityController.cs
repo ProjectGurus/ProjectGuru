@@ -9,41 +9,40 @@ namespace ProjectGuru.Controllers
 {
     public class ActivityController : Controller
     {
+        private ProjectRepository projectRepository = new ProjectRepository(new DataBase());
+        private Repository<Activity> activityRepository = new Repository<Activity>(new DataBase());
+
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string project)
         {
-            return View(ActivityRepository.GetInstance().Get());
+            ViewBag.Project = project;
+            return View(projectRepository.Find(project).Activities);
         }
 
         [HttpGet]
         public ActionResult Details(string name)
         {
-            return View(ActivityRepository.GetInstance().Get().Find(a => a.Name.Equals(name)));
+            return View(activityRepository.Find(name));
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(string project)
         {
+            ViewBag.Project = project;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(Activity activity)
+        public ActionResult Create(string project, Activity activity)
         {
-            try
-            {
-                ActivityRepository.GetInstance().Add(activity);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            projectRepository.Find(project).Activities.Add(activity);
+            projectRepository.Persist();
+            return RedirectToAction("Index", new { project = project });
         }
 
         public ActionResult Edit(string name)
         {
-            return View(ActivityRepository.GetInstance().Get(name));
+            return View(activityRepository.Find(name));
         }
 
         [HttpPost]
@@ -51,7 +50,10 @@ namespace ProjectGuru.Controllers
         {
             try
             {
-                ActivityRepository.GetInstance().Update(updated);
+                Activity activity = activityRepository.Find(name);
+                activity.Description = updated.Description;
+                activity.Duration = updated.Duration;
+                activityRepository.Persist();
                 return RedirectToAction("Index");
             }
             catch
@@ -63,7 +65,7 @@ namespace ProjectGuru.Controllers
         [HttpGet]
         public ActionResult Delete(string name)
         {
-            return View(ActivityRepository.GetInstance().Get(name));
+            return View(activityRepository.Find(name));
         }
 
         [HttpPost]
@@ -71,7 +73,8 @@ namespace ProjectGuru.Controllers
         {
             try
             {
-                ActivityRepository.GetInstance().Remove(name);
+                activityRepository.Remove(name);
+                activityRepository.Persist();
                 return RedirectToAction("Index");
             }
             catch

@@ -1,13 +1,13 @@
-﻿@model IEnumerable<ProjectGuru.Models.Activity>
+﻿@model IEnumerable<ProjectGuru.Models.Project>
 
 @{
-    ViewBag.Title = "Activities";
+    ViewBag.Title = "Project Overview";
 }
 
-<h2>Activities Overview</h2>
+<h2>Projects Overview</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", new { project = ViewBag.Project })
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
@@ -16,9 +16,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Duration)
         </th>
         <th></th>
     </tr>
@@ -33,11 +30,8 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
+                @Html.ActionLink("View Activities", "Index", "Activity", new { project = item.Name }, null) |
                 @Html.ActionLink("Edit", "Edit", new { name = item.Name }) |
-                @Html.ActionLink("Details", "Details", new { name = item.Name }) |
                 @Html.ActionLink("Delete", "Delete", new { name = item.Name })
             </td>
         </tr>
