@@ -4,6 +4,6 @@ namespace ProjectGuru.DataAccess
 {
     public interface IProjectRepository : IRepository<Project>
     {
-        Project GetProjectWithActivities(int projectId);
+        Project GetWithActivities(int projectId);
     }
 }

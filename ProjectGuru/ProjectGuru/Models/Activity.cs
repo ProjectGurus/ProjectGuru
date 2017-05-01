@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectGuru.Models
 {
-    public class Activity
+    public class Activity : IActivity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,5 +15,13 @@ namespace ProjectGuru.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public float Duration { get; set; }
+
+        public float EstimatedDuration
+        {
+            get
+            {
+                return Duration;
+            }
+        }
     }
 }

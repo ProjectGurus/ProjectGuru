@@ -149,12 +149,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AppContext.cs" />
+    <Compile Include="DataAccess\AppContext.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="DataAccess\IProjectRepository.cs" />
-    <Compile Include="DataAccess\IRepository.cs" />
+    <Compile Include="DataAccess\RepositoryPattern\IRepository.cs" />
     <Compile Include="DataAccess\ProjectRepository.cs" />
-    <Compile Include="DataAccess\Repository.cs" />
+    <Compile Include="DataAccess\RepositoryPattern\Repository.cs" />
+    <Compile Include="Models\IActivity.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

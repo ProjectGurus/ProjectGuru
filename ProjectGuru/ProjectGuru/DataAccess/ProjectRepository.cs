@@ -13,7 +13,12 @@ namespace ProjectGuru.DataAccess
 
         private AppContext ProjectContext { get { return Context as AppContext; } }
 
-        public Project GetProjectWithActivities(int projectId)
+        public IEnumerable<Project> GetAllWithActivities()
+        {
+            return ProjectContext.Projects.Include(p => p.Activities);
+        }
+
+        public Project GetWithActivities(int projectId)
         {
             return ProjectContext.Projects.Where(p => p.Id.Equals(projectId)).Include(p => p.Activities).FirstOrDefault();
         }

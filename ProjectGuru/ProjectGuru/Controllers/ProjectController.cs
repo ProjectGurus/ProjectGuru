@@ -15,7 +15,7 @@ namespace ProjectGuru.Controllers
         {
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Projects.GetAll()); 
+                return View(uow.Projects.GetAllWithActivities()); 
             }
         }
 
@@ -85,7 +85,7 @@ namespace ProjectGuru.Controllers
         {
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Projects.Get(projectId));
+                return View(uow.Projects.GetWithActivities(projectId));
             }
         }
 

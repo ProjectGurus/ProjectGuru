@@ -16,7 +16,7 @@ namespace ProjectGuru.Controllers
             ViewBag.ProjectId = projectId;
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Projects.GetProjectWithActivities(projectId).Activities);
+                return View(uow.Projects.GetWithActivities(projectId).Activities);
             }
         }
 
@@ -42,7 +42,7 @@ namespace ProjectGuru.Controllers
         {
             using (UnitOfWork uow = new UnitOfWork())
             {
-                uow.Projects.GetProjectWithActivities(projectId).Activities.Add(activity);
+                uow.Projects.GetWithActivities(projectId).Activities.Add(activity);
                 uow.Complete();
                 return RedirectToAction("Index", new { projectId = projectId }); 
             }
