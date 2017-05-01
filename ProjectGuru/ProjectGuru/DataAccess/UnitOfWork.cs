@@ -10,8 +10,8 @@ namespace ProjectGuru.DataAccess
     {
         private AppContext context;
 
-        public ProjectRepository Projects { get; private set; }
-        public Repository<Activity> Activities { get; private set; }
+        public IProjectRepository Projects { get; private set; }
+        public IRepository<Activity> Activities { get; private set; }
 
         public UnitOfWork()
         {

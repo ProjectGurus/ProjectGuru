@@ -1,5 +1,6 @@
 ﻿using ProjectGuru.DataAccess;
 using ProjectGuru.Models;
+using ProjectGuru.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,8 @@ namespace ProjectGuru.Controllers
             ViewBag.ProjectId = projectId;
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Projects.GetWithActivities(projectId).Activities);
+                Project parent = uow.Projects.GetWithActivities(projectId);
+                return View(new ActivityListViewModel(parent));
             }
         }
 
@@ -26,7 +28,7 @@ namespace ProjectGuru.Controllers
             ViewBag.ProjectId = projectId;
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Activities.Get(id)); 
+                return View(uow.Activities.Get(id));
             }
         }
 
@@ -44,7 +46,7 @@ namespace ProjectGuru.Controllers
             {
                 uow.Projects.GetWithActivities(projectId).Activities.Add(activity);
                 uow.Complete();
-                return RedirectToAction("Index", new { projectId = projectId }); 
+                return RedirectToAction("Index", new { projectId = projectId });
             }
         }
 
@@ -54,7 +56,7 @@ namespace ProjectGuru.Controllers
             ViewBag.ProjectId = projectId;
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Activities.Get(id)); 
+                return View(uow.Activities.Get(id));
             }
         }
 
@@ -69,7 +71,7 @@ namespace ProjectGuru.Controllers
                     activity.Name = updated.Name;
                     activity.Description = updated.Description;
                     activity.Duration = updated.Duration;
-                    uow.Complete(); 
+                    uow.Complete();
                 }
                 return RedirectToAction("Index", new { projectId = projectId });
             }
@@ -85,7 +87,7 @@ namespace ProjectGuru.Controllers
             ViewBag.ProjectId = projectId;
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Activities.Get(id)); 
+                return View(uow.Activities.Get(id));
             }
         }
 
@@ -98,7 +100,7 @@ namespace ProjectGuru.Controllers
                 {
                     uow.Activities.Remove(uow.Activities.Get(id));
                     uow.Complete();
-                    return RedirectToAction("Index", new { projectId = projectId }); 
+                    return RedirectToAction("Index", new { projectId = projectId });
                 }
             }
             catch

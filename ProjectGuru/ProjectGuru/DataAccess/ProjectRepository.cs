@@ -11,16 +11,23 @@ namespace ProjectGuru.DataAccess
     {
         public ProjectRepository(AppContext context) : base(context) { }
 
-        private AppContext ProjectContext { get { return Context as AppContext; } }
+        private AppContext AppContext { get { return Context as AppContext; } }
 
         public IEnumerable<Project> GetAllWithActivities()
         {
-            return ProjectContext.Projects.Include(p => p.Activities);
+            return AppContext.Projects.Include(p => p.Activities);
         }
 
         public Project GetWithActivities(int projectId)
         {
-            return ProjectContext.Projects.Where(p => p.Id.Equals(projectId)).Include(p => p.Activities).FirstOrDefault();
+            return AppContext.Projects.Where(p => p.Id.Equals(projectId)).Include(p => p.Activities).FirstOrDefault();
+        }
+
+        public new void Remove(Project project)
+        {
+            project = GetWithActivities(project.Id);
+            AppContext.Activities.RemoveRange(project.Activities);
+            AppContext.Projects.Remove(project);
         }
     }
 }
