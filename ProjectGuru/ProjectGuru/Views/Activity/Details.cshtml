@@ -1,4 +1,4 @@
-﻿@model ProjectGuru.Models.Activity
+﻿@model ProjectGuru.ViewModels.ActivityViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,32 +11,32 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            Project
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.ParentProject.Name)
         </dd>
 
         <dt>
-        @Html.DisplayNameFor(model => model.Description)
+           Activity
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Activity.Name) - @Html.DisplayFor(model => model.Activity.Description)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Duration)
+           Duration
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Duration)
+            @Html.DisplayFor(model => model.Activity.Duration)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { projectId = @Html.ViewBag.ProjectId, id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index", new { projectId = @Html.ViewBag.ProjectId})
+    @Html.ActionLink("Edit", "Edit", new { projectId = Model.ParentProject.Id, activityId = Model.Activity.Id }) |
+    @Html.ActionLink("Back to List", "Index", new { projectId = Model.ParentProject.Id})
 </p>

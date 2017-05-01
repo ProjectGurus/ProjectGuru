@@ -14,7 +14,6 @@ namespace ProjectGuru.Controllers
         [HttpGet]
         public ActionResult Index(int projectId)
         {
-            ViewBag.ProjectId = projectId;
             using (UnitOfWork uow = new UnitOfWork())
             {
                 Project parent = uow.Projects.GetWithActivities(projectId);
@@ -23,20 +22,22 @@ namespace ProjectGuru.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int projectId, int id)
+        public ActionResult Details(int projectId, int activityId)
         {
-            ViewBag.ProjectId = projectId;
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Activities.Get(id));
+                return View(new ActivityViewModel(uow.Activities.Get(activityId), uow.Projects.Get(projectId)));
             }
         }
 
         [HttpGet]
         public ActionResult Create(int projectId)
         {
-            ViewBag.ProjectId = projectId;
-            return View();
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                Project project = uow.Projects.Get(projectId);
+                return View(project);
+            }
         }
 
         [HttpPost]
@@ -51,26 +52,25 @@ namespace ProjectGuru.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int projectId, int id)
+        public ActionResult Edit(int projectId, int activityId)
         {
-            ViewBag.ProjectId = projectId;
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Activities.Get(id));
+                return View(new ActivityViewModel(uow.Activities.Get(activityId), uow.Projects.Get(projectId)));
             }
         }
 
         [HttpPost]
-        public ActionResult Edit(int projectId, Activity updated)
+        public ActionResult Edit(int projectId, ActivityViewModel updated)
         {
             try
             {
                 using (UnitOfWork uow = new UnitOfWork())
                 {
-                    Activity activity = uow.Activities.Get(updated.Id);
-                    activity.Name = updated.Name;
-                    activity.Description = updated.Description;
-                    activity.Duration = updated.Duration;
+                    Activity activity = uow.Activities.Get(updated.Activity.Id);
+                    activity.Name = updated.Activity.Name;
+                    activity.Description = updated.Activity.Description;
+                    activity.Duration = updated.Activity.Duration;
                     uow.Complete();
                 }
                 return RedirectToAction("Index", new { projectId = projectId });
@@ -82,23 +82,22 @@ namespace ProjectGuru.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delete(int projectId, int id)
+        public ActionResult Delete(int projectId, int activityId)
         {
-            ViewBag.ProjectId = projectId;
             using (UnitOfWork uow = new UnitOfWork())
             {
-                return View(uow.Activities.Get(id));
+                return View(new ActivityViewModel(uow.Activities.Get(activityId), uow.Projects.Get(projectId)));
             }
         }
 
         [HttpPost]
-        public ActionResult Delete(int projectId, int id, FormCollection forms)
+        public ActionResult Delete(int projectId, int activityId, FormCollection forms)
         {
             try
             {
                 using (UnitOfWork uow = new UnitOfWork())
                 {
-                    uow.Activities.Remove(uow.Activities.Get(id));
+                    uow.Activities.Remove(uow.Activities.Get(activityId));
                     uow.Complete();
                     return RedirectToAction("Index", new { projectId = projectId });
                 }

@@ -6,11 +6,11 @@
     ProjectGuru.Models.Project Project = Model.ParentProject;
 }
 
-<h2>Activities Overview</h2>
+<h2>@Project.Name</h2>
 
 <p>
-    @Html.ActionLink("New Activity", "Create", new { projectId = Project.Id }) |
-    @Html.ActionLink("Back to " + Project.Name, "Index", "Project")
+    @Html.ActionLink("Add", "Create", new { projectId = Project.Id }) |
+    @Html.ActionLink("Back", "Index", "Project")
 </p>
 <table class="table">
     <tr>
@@ -39,9 +39,9 @@
                 @Html.DisplayFor(modelItem => item.Duration)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { projectId = Project.Id, id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { projectId = Project.Id, id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { projectId = Project.Id, id = item.Id })
+                @Html.ActionLink("Edit", "Edit", new { projectId = Project.Id, activityId = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { projectId = Project.Id, activityId = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { projectId = Project.Id, activityId = item.Id })
             </td>
         </tr>
     }
